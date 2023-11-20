@@ -10,11 +10,10 @@ public enum SkinType {
     hands,
     legs,
     foots,
-    ungroupedSkin
+    general
 }
 
-public class Skin : MonoBehaviour, IPointerClickHandler
-{
+public class Skin : MonoBehaviour, IPointerClickHandler {
     [SerializeField] private GameObject[] _my3DReferences;
     [SerializeField] private UnityEngine.UI.Image _stateImage;
     [SerializeField] private SkinType _mySkinType;

@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ViewPosition : MonoBehaviour
-{
+public class ViewPosition : MonoBehaviour {
     [SerializeField] private SkinsController _skinsController;
     [SerializeField] private CameraViewController _cameraViewController;
     [SerializeField] private SkinType _filteringSkinType;

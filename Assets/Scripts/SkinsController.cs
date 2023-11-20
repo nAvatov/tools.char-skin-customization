@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkinsController : MonoBehaviour
-{
-    [SerializeField] RectTransform contentPlacementRT;
-    [SerializeField] List<Skin> _avaiableSkins;
-    private static List<Skin> currentEnabledSkins;
+public class SkinsController : MonoBehaviour {
+    [SerializeField] private RectTransform contentPlacementRT;
+    [SerializeField] private List<Skin> _avaiableSkins;
+    private List<Skin> _enabledSkins;
 
     private void Start() {
-        currentEnabledSkins = new List<Skin>();
-        InitializeSkins();
+        _enabledSkins = new List<Skin>();
+        SetChoiceHanlder();
     }
 
     // Skin filtering method based on chosen skin type transmitted as arg
     public void FilterSkins(SkinType chosenSkinType) {
         // If general view - show all the skins without filter
-        if (chosenSkinType == SkinType.ungroupedSkin) { 
+        if (chosenSkinType == SkinType.general) { 
             for(int i = 0; i < contentPlacementRT.childCount; i++) {
                 contentPlacementRT.GetChild(i).gameObject.SetActive(true);
             }
@@ -34,26 +33,24 @@ public class SkinsController : MonoBehaviour
         if (add) {
             DisableDuplicateTypeOfSkins(skin.MySkinType);
             skin.EnableSkin();
-            currentEnabledSkins.Add(skin);
+            _enabledSkins.Add(skin);
         } else {
-            currentEnabledSkins.Remove(skin);
+            _enabledSkins.Remove(skin);
             skin.DisableSkin();
         }
     }
 
-    private static void DisableDuplicateTypeOfSkins(SkinType typeToCheck) {
-        foreach(Skin skin in currentEnabledSkins) {
+    private void DisableDuplicateTypeOfSkins(SkinType typeToCheck) {
+        foreach(Skin skin in _enabledSkins) {
             if (skin.MySkinType == typeToCheck) {
                 skin.DisableSkin();
             }
         }
     }
 
-    private void InitializeSkins() {
+    private void SetChoiceHanlder() {
         foreach(Skin enabledSkin in _avaiableSkins) {
             enabledSkin.Construct(HandleChosenSkins);
         }
-
-        Debug.Log("Skins initialized");
     }
 }
