@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class ViewPosition : MonoBehaviour
 {
-    [SerializeField] SkinsController skinsController;
-    [SerializeField] string skinsTypeName;
-
-
-    #region Public Methods
+    [SerializeField] private SkinsController _skinsController;
+    [SerializeField] private CameraViewController _cameraViewController;
+    [SerializeField] private SkinType _filteringSkinType;
         
     public void SetThisView() {
-        CameraViewController.MoveCamera(gameObject.transform);
-        skinsController.FilterSkins(Skin.DetermineSkinType(skinsTypeName));
+        _cameraViewController.MoveCamera(gameObject.transform);
+        _skinsController.FilterSkins(_filteringSkinType);
     }
-
-    #endregion
 }

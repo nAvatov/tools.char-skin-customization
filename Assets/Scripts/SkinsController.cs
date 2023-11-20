@@ -5,53 +5,55 @@ using UnityEngine;
 public class SkinsController : MonoBehaviour
 {
     [SerializeField] RectTransform contentPlacementRT;
+    [SerializeField] List<Skin> _avaiableSkins;
     private static List<Skin> currentEnabledSkins;
 
-    #region UnityMethods
-
-    private void Awake() {
+    private void Start() {
         currentEnabledSkins = new List<Skin>();
+        InitializeSkins();
     }
-        
-    #endregion
 
-
-    /// <summary>
-    /// Skin filtering method based on chosen skin type transmitted as arg
-    /// </summary>
-    /// <param name="chosenSkinType"></param>
+    // Skin filtering method based on chosen skin type transmitted as arg
     public void FilterSkins(SkinType chosenSkinType) {
-        if (chosenSkinType == SkinType.ungroupedSkin) { // If general view - show all the skins without filter
+        // If general view - show all the skins without filter
+        if (chosenSkinType == SkinType.ungroupedSkin) { 
             for(int i = 0; i < contentPlacementRT.childCount; i++) {
                 contentPlacementRT.GetChild(i).gameObject.SetActive(true);
             }
-        } else { // Filter skins by view position
+        // Filter skins by view position
+        } else { 
             for(int i = 0; i < contentPlacementRT.childCount; i++) {
-                contentPlacementRT.GetChild(i).gameObject.SetActive(contentPlacementRT.GetChild(i).gameObject.GetComponent<Skin>().MyType == chosenSkinType);
+                contentPlacementRT.GetChild(i).gameObject.SetActive(contentPlacementRT.GetChild(i).gameObject.GetComponent<Skin>().MySkinType == chosenSkinType);
             }
         }
     
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(contentPlacementRT);
     }
 
-    public static void HandleChosenSkins(Skin skin, bool add) {
+    private void HandleChosenSkins(Skin skin, bool add) {
         if (add) {
-            DisableDuplicateTypeOfSkins(skin.MyType);
+            DisableDuplicateTypeOfSkins(skin.MySkinType);
             skin.EnableSkin();
             currentEnabledSkins.Add(skin);
-            Debug.Log("New skin added");
         } else {
             currentEnabledSkins.Remove(skin);
             skin.DisableSkin();
-            Debug.Log("Removing skin from enabled list");
         }
     }
 
     private static void DisableDuplicateTypeOfSkins(SkinType typeToCheck) {
         foreach(Skin skin in currentEnabledSkins) {
-            if (skin.MyType == typeToCheck) {
+            if (skin.MySkinType == typeToCheck) {
                 skin.DisableSkin();
             }
         }
+    }
+
+    private void InitializeSkins() {
+        foreach(Skin enabledSkin in _avaiableSkins) {
+            enabledSkin.Construct(HandleChosenSkins);
+        }
+
+        Debug.Log("Skins initialized");
     }
 }

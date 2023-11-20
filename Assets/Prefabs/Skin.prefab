@@ -60,8 +60,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbdde7ae758b58849a9e12380a350a98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  my3DReference: {fileID: 0}
-  activityImage: {fileID: 340755477369342355}
+  _my3DReferences: []
+  _stateImage: {fileID: 340755477369342355}
+  _mySkinType: 0
 --- !u!1 &5988032384036089424
 GameObject:
   m_ObjectHideFlags: 0
